@@ -2,78 +2,71 @@
 title: 'NAS Project'
 description: 'Deploying a NAS solution from scratch using custom hardware, software learned.'
 pubDate: 'Jan 08 2025'
-heroImage: '/blog-placeholder-3.jpg'
+heroImage: '/raspberry-pi-nas-medium.jpeg'
 tags: [NAS, Home Server, Portfolio]
 ---
 
 I have been working on a NAS (Network Attached Storage) project at home. The goal is to create a centralized storage solution that can be accessed from anywhere in the house, and also in future remotely when needed. 
 
-# NAS Project
-
-Over the past few months I’ve been building a home NAS (Network Attached Storage) to centralize all my files, media and backups. The goal was two-fold:
-
-1. Create a rock-solid, always-on storage server accessible from any device on my local network.  
-2. Lay the groundwork for future remote access—so I can grab a photo or a video from anywhere in the world.
+This project is a great way to learn about Linux, networking, and storage solutions. Here’s a quick overview of what I set out to achieve:
+1. Create a solid, always available storage server accessible from any device on my local network.  
+2. Lay the groundwork for future remote access, so I can grab a photo or a video from anywhere in the world.
 
 ---
 
 ## Why a Home NAS?
 
 - **Centralized Storage**  
-  No more scattered USB drives or half-filled SD cards. Everything lives in one place.  
+  No more USB drives or SD cards for copying data between devices. Everything lives in one centralized place.  
 - **Media Streaming**  
   Stream movies, music and photos to TVs, laptops and phones without juggling external drives.  
 - **Automated Backups**  
-  Nightly snapshots of laptops and mobile devices keep data safe and recoverable.  
+  To be done, Weekly backups of devices to keep data safe and recoverable. 
 
 ---
 
 ## Hardware & Software Stack
 
 - **Raspberry Pi 4**  
-  Low power draw, silent operation, and enough USB 3.0 throughput for a few spinning drives.  
+  Consumes low power draw, silent operation, and enough USB 3.0 throughput for a few spinning drives. Can mount hats for additional functionalities for NVMe storage or other peripherals in the future.
 - **OpenMediaVault (OMV)**  
-  Debian-based NAS OS with a polished web UI—packages for SMB, NFS, FTP, Docker and more.  
+  One of the most popular and open-source debian linux based NAS OS/Software with a polished web UI—packages for SMB, NFS, FTP for file sharing and mainly support raid configurations for redundancy.
 - **External Drives**  
-  A pair of 4 TB HDDs in a USB-powered enclosure, configured for snapshots and quota management.  
+  A 1TB HDDs in a USB-powered. Can also add more USB drives as needed.
 - **Networking**  
   - Static IP via NetworkManager to keep the server address predictable.  
-  - Gigabit Ethernet backhaul for maximum throughput.  
+  - Connected via Ethernet cable for maximum throughput.
 
 ---
 
 ## What I Did
 
 1. **Hardware Assembly**  
-   – Chose and assembled the Pi + USB-HDD enclosure  
-   – Screenless design tucked under my desk  
+   – Assembled the RaspberryPi 4 + USB-HDD.  
+   – No need for any monitor, keyboard or mouse as all the configuration is done via Raspberry Pi Imager and later using SSH.
 2. **OMV Installation & Configuration**  
-   – Ran OMV install script and rebooted  
-   – Created and mounted file systems (EXT4) in the web UI  
-   – Defined shared folders and applied user/group permissions  
+   – Ran OMV install script using SSH.
+   – Created and mounted file systems (EXT4) in the web UI.
+   – Defined shared folders and applied user/group permissions.
 3. **Service Enablement**  
-   – SMB for Windows clients, NFS for Linux/macOS, and optional FTP  
-   – Docker on OMV for future containers (e.g., Nextcloud, Plex)  
+   – SMB for Windows clients, NFS for Linux/macOS, and FTP.
+   – Next set up docker on the Raspberry Pi for future containers.
+   - Installed Plex Media Server for streaming media files to various devices.
 4. **Networking**  
-   – Assigned a static IP (e.g., 192.168.1.150) via `nmcli`  
-   – Verified connectivity and configured UFW rules for planned remote VPN  
-5. **Automation & Backups**  
-   – Cron jobs to rsync client data night-ly  
-   – Email alerts on failed jobs  
+   – Assigned a static IP via `nmcli`.
 
 ---
 
 ## Key Lessons & Next Steps
-
-- **Planning Matters**  
-  Mapping share structure and user permissions up-front saved countless headaches.  
-- **Stay Minimal**  
-  Running only the services I actually need keeps the system lean and secure.  
+- **Learning Curve**  
+  Setting up a NAS from scratch taught me a lot about Linux, networking, and storage management.
 - **Remote Access**  
-  Next up is setting up a WireGuard VPN so I can safely reach my NAS from anywhere.  
+  Next up is setting up a VPN so I can safely reach my NAS from anywhere.
+- **Future Services**  
+  I plan to add more services like a home automation server, Torrent client and Media backups.
 - **Containerization**  
   I’ll deploy Nextcloud in Docker for cloud-style file sync, and Plex for on-the-fly transcoding.
 
 ---
 
-This project not only gave me a robust home-grown storage server but also deepened my skills in Linux administration, networking, and automation. Stay tuned for a detailed setup guide—coming next!
+This project not only gave me a robust home-grown storage server but also deepened my skills in Linux administration, networking, and automation. Stay tuned for a detailed setup guide coming next!
