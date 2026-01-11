@@ -1,27 +1,40 @@
-# Astro Starter Kit: Blog
+# Sachinthra N V - Portfolio & Resume
 
-```sh
-npm create astro@latest -- --template blog
-```
+Professional portfolio website built with Astro showcasing projects, skills, and experience as a Cloud Developer and Software Engineer.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/blog)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/blog)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/blog/devcontainer.json)
+## 🌐 Live Site
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+**[https://sachinthra.github.io](https://sachinthra.github.io)**
 
-![blog](https://github.com/withastro/astro/assets/2244813/ff10799f-a816-4703-b967-c78997e8323d)
+## 👨‍💻 About Me
 
-Features:
+Software Development Engineer II (SDE-2) at Hewlett Packard Enterprise (HPE) with 3+ years of experience in:
+- Cloud solutions architecture and development
+- Backend engineering with Go and Python
+- DevOps and containerization
+- IoT and embedded systems
+- Self-hosted infrastructure
 
-- ✅ Minimal styling (make it your own!)
+## 🛠️ Tech Stack
+
+- **Framework:** [Astro](https://astro.build/) - Fast, content-focused static site generator
+- **Styling:** Custom CSS with dark/light theme support
+- **Content:** Markdown & MDX for blog posts
+- **SEO:** Sitemap, RSS feed, OpenGraph, JSON-LD structured data
+- **Deployment:** GitHub Pages
+
+## ✨ Features
+
+- ✅ Minimal, professional design
 - ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+- ✅ SEO-optimized with meta tags and structured data
+- ✅ Sitemap and RSS feed
+- ✅ Dark/light theme toggle
+- ✅ Blog with project showcases
+- ✅ Responsive design
+- ✅ Fast page loads
 
-## 🚀 Project Structure
+## 📂 Project Structure
 
 Inside of your Astro project, you'll see the following folders and files:
 
@@ -59,16 +72,40 @@ All commands are run from the root of the project, from a terminal:
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
 
-## 👀 Want to learn more?
+## � Featured Projects
 
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+### File Locker
+Production-ready encrypted file storage & streaming server built with Go, Preact, Docker, and AES-256. Running on Raspberry Pi 4 with 1TB storage.
 
-## Credit
+### NAS Project
+Custom Network Attached Storage solution using Raspberry Pi 4 and OpenMediaVault for centralized home storage.
 
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+### Home Server
+Self-hosted infrastructure running multiple services including file storage, media streaming, and automation.
 
+## 📈 SEO Features
 
---- 
+- Sitemap generation at `/sitemap-index.xml`
+- RSS feed at `/rss.xml`
+- robots.txt for search engine crawlers
+- OpenGraph and Twitter Card meta tags
+- JSON-LD structured data for blog posts
+- Optimized meta descriptions and keywords
+- Canonical URLs
+
+## 🚀 Deployment
+
+Site is automatically deployed to GitHub Pages on push to main branch.
+
+## 📫 Connect
+
+- **GitHub:** [@sachinthra](https://github.com/sachinthra)
+- **LinkedIn:** [Sachinthra N V](https://linkedin.com/in/sachinthra)
+- **Portfolio:** [sachinthra.github.io](https://sachinthra.github.io)
+
+---
+
+Built with [Astro](https://astro.build) • Hosted on [GitHub Pages](https://pages.github.com)
 
 Init
 ```bash

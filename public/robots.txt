@@ -1,0 +1,6 @@
+# Allow all bots to crawl the entire site
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://sachinthra.github.io/sitemap-index.xml
