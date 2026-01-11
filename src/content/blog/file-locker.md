@@ -1,7 +1,7 @@
 ---
 title: 'File Locker'
 description: 'A production-ready encrypted file storage and streaming system built from scratch using Go, Docker, and AES-256 encryption.'
-pubDate: 'Jan 11 2026'
+pubDate: 'Jan 1 2026'
 heroImage: '/images/blog/file-locker/file-locker-hero.jpg'
 tags: ['Go', 'Security', 'Self-Hosted', 'Full-Stack', 'Docker', 'System Design']
 ---
