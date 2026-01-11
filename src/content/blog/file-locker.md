@@ -1,48 +1,47 @@
 ---
-title: 'File Locker – Secure Self-Hosted File Storage'
-description: 'Production-ready encrypted file storage & streaming server built with Go, Preact, Docker, and AES-256.'
+title: 'File Locker'
+description: 'A production-ready encrypted file storage and streaming system built from scratch using Go, Docker, and AES-256 encryption.'
 pubDate: 'Jan 11 2026'
 heroImage: '/images/blog/file-locker/file-locker-hero.jpg'
-tags: ['Go', 'Security', 'Self-Hosted', 'Full-Stack', 'Docker', 'Portfolio']
+tags: ['Go', 'Security', 'Self-Hosted', 'Full-Stack', 'Docker', 'System Design']
 ---
 
-## File Locker  
-**Production-ready encrypted file storage & streaming server**
+## The Pitch
+I wanted a Google Drive alternative, but one where *I* owned the encryption keys.
 
-I built File Locker as a **self-hosted, privacy-first file storage platform** with built-in encryption, secure video streaming, a modern web UI, admin dashboard, and a full-featured CLI tool.
+**File Locker** is a self-hosted platform I built to store files securely. It’s not just a wrapper around an S3 bucket; it encrypts everything at rest using **AES-256**, supports video streaming with seeking (which is hard with encryption!), and has a full CLI for automation.
 
-This project demonstrates **backend engineering, security design, DevOps, and system architecture** in a real-world, production-grade system running on my Raspberry Pi 4.
-
-**Key Highlights:**
-- Encrypted Storage with AES-256
-- Secure Video Streaming with seek support
-- Web UI + Admin Dashboard + CLI
-- Dockerized multi-service deployment
-- Running on Raspberry Pi 4 (ARM64)
+It’s currently running live on my Raspberry Pi.
 
 ---
 
 ## Tech Stack
 
-**Backend:** Go · Chi · PostgreSQL · Redis · MinIO  
-**Frontend:** Preact · Vite · Axios  
-**Security:** AES-256-GCM · AES-256-CTR · JWT · Bcrypt  
-**DevOps:** Docker · Docker Compose · Nginx  
-**Deployment:** ARM64 · Raspberry Pi 4 · Linux  
+* **Backend:** Go (Chi router), PostgreSQL (Metadata), Redis (Sessions), MinIO (Object Storage)
+* **Frontend:** Preact (Lightweight React), Vite, TailwindCSS
+* **Security:** AES-256-GCM (Files), AES-CTR (Streaming), JWT, Argon2
+* **DevOps:** Docker Compose, Multi-Arch Builds (ARM64/AMD64)
 
 ---
 
-## Key Features
+## The Coolest Features
 
-- AES-256 encrypted file storage (at rest)
-- Secure video streaming with **seek support**
-- Web UI with drag-and-drop uploads
-- Admin dashboard with user & storage management
-- Role-based access control (User / Admin)
-- Personal Access Tokens for automation
-- Full-featured CLI (38 commands)
-- Multi-service Docker deployment
-- Running on Raspberry Pi 4 with 1TB storage
+### 1. Encrypted Video Streaming (with Seek!)
+This was the hardest technical challenge. You can't just encrypt a video file and expect it to stream.
+* **The Problem:** If a user jumps to minute 5:00, the player requests a specific byte range. But encryption changes byte alignment.
+* **The Solution:** I implemented **AES-CTR** mode for streaming. I calculate the exact block offset based on the requested byte range, adjust the IV (Initialization Vector), and decrypt *just* that chunk on the fly.
+
+### 2. "No-Trust" Storage
+Even if someone steals the physical hard drive from my Pi, they get nothing.
+* Files are encrypted *before* they touch the disk.
+* Metadata (names, types) is stored separately in Postgres.
+* Keys are managed via a secure envelope pattern.
+
+### 3. The CLI Tool
+I love the terminal, so I built a Go CLI with **38 commands**. It mimics the API perfectly.
+* `fl upload path/to/file` (Drag-and-drop terminal upload)
+* `fl ls` (Lists files like a native directory)
+* `fl share` (Generates temporary access links)
 
 ---
 
@@ -102,6 +101,13 @@ This project demonstrates **backend engineering, security design, DevOps, and sy
 
 ## Architecture Overview
 
+It’s a microservices-style setup running via Docker Compose:
+
+1.  **Nginx:** Handles SSL termination and routes traffic.
+2.  **Go API:** The brain. Handles auth, encryption logic, and database queries.
+3.  **MinIO:** The dumb storage layer. It only sees encrypted blobs.
+4.  **Redis:** Caches user sessions and download tokens for speed.
+
 **Service Flow:**
 
 ```text
@@ -128,52 +134,12 @@ Range Request → Decrypt (AES-256-CTR) → Stream
 
 ---
 
-## Technical Challenges Solved
+## Key Takeaways
+* **Go is perfect for IO:** Streaming encrypted data with `io.Reader` and `io.Writer` interfaces in Go is incredibly memory efficient.
+* **State management:** Managing upload progress and resumable uploads required careful frontend-backend sync.
+* **Cross-Platform Builds:** Since I code on a Mac (ARM64) and deploy to a Pi (Linux ARM64), setting up `docker buildx` pipelines was essential.
 
-1. **Encrypted Video Streaming**  
-   Enabled seek support using AES-CTR + HTTP Range.
-
-2. **Multi-Arch Docker Builds**  
-   Built amd64 + arm64 images with Docker buildx.
-
-3. **Session Security**  
-   Redis-based session TTL + admin force logout.
-
-4. **Frontend Proxy Issues**  
-   Solved Vite + Nginx API routing conflicts.
-
-5. **CLI Reliability**  
-   Robust error handling and token detection.
-
----
-
-## Key Achievements
-
-- Built full system **from scratch**
-- Production-ready architecture
-- Secure encryption implementation
-- Multi-platform deployment
-- Real-world usage on Raspberry Pi
-- Developer-friendly CLI + docs
-
----
-
-## Future Enhancements
-
-- End-to-end client-side encryption  
-- Public file sharing  
-- Mobile apps  
-- OCR search  
-- Multi-cloud backups  
-- Real-time analytics dashboard  
-
----
-
-## Project Links
-
-- **GitHub:** https://github.com/sachinthra/file-locker  
-- **Docs:** API + setup guides included in repository  
-- **Live Demo:** Running on my personal Raspberry Pi 4  
+**[View Source on GitHub](https://github.com/sachinthra/file-locker)**
 
 ---
 
@@ -188,7 +154,3 @@ This project demonstrates:
 - **Real-world production experience:** Running 24/7 on my home network
 
 File Locker isn't just a demo app — it's a **real system** I use daily to solve real storage and streaming needs.
-```
-
----
-

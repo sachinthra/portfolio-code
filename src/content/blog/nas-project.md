@@ -1,9 +1,9 @@
 ---
 title: 'NAS Project'
-description: 'Deploying a NAS solution from scratch using custom hardware, software learned.'
+description: 'Building a reliable, multi-protocol NAS (SMB, NFS, FTP) on a Raspberry Pi 4 using OpenMediaVault.'
 pubDate: 'Jan 08 2025'
-heroImage: '/raspberry-pi-nas-medium.jpeg'
-tags: [NAS, Home Server, Portfolio]
+heroImage: '/images/blog/nas/raspberry-pi-nas-medium.jpeg'
+tags: ['NAS', 'Home Server', 'Raspberry Pi', 'OpenMediaVault', 'Linux', 'Storage', 'Networking']
 ---
 
 I have been working on a NAS (Network Attached Storage) project at home. The goal is to create a centralized storage solution that can be accessed from anywhere in the house, and also in future remotely when needed. 
@@ -68,5 +68,8 @@ This project is a great way to learn about Linux, networking, and storage soluti
   I’ll deploy Nextcloud in Docker for cloud-style file sync, and Plex for on-the-fly transcoding.
 
 ---
+
+## Why This Matters
+This project forced me to learn **Linux SysAdmin skills** for real. I got comfortable with `fstab`, user groups, `systemd`, and diagnosing network bottlenecks. It’s not just a hard drive plugged into a router; it’s a managed storage server.
 
 This project not only gave me a robust home-grown storage server but also deepened my skills in Linux administration, networking, and automation. Stay tuned for a detailed setup guide coming next!
