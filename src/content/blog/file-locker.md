@@ -9,9 +9,9 @@ tags: ['Go', 'Security', 'Self-Hosted', 'Full-Stack', 'Docker', 'System Design']
 ## The Pitch
 I wanted a Google Drive alternative, but one where *I* owned the encryption keys.
 
-**File Locker** is a self-hosted platform I built to store files securely. It’s not just a wrapper around an S3 bucket; it encrypts everything at rest using **AES-256**, supports video streaming with seeking (which is hard with encryption!), and has a full CLI for automation.
+**File Locker** is a self-hosted platform I built to store files securely. It's not just a wrapper around an S3 bucket; it encrypts everything at rest using **AES-256**, supports video streaming with seeking (which is hard with encryption!), and has a full CLI for automation.
 
-It’s currently running live on my Raspberry Pi.
+It's currently running live on my Raspberry Pi.
 
 ---
 
@@ -47,13 +47,13 @@ I love the terminal, so I built a Go CLI with **38 commands**. It mimics the API
 
 ## Product Preview
 
-![File Locker Dashboard](/images/blog/file-locker/file-locker-dashboard.jpg)  
+![File Locker Dashboard](/images/blog/file-locker/file-locker-dashboard.jpg)
 *Modern web interface with file management and uploads*
 
-![Admin Dashboard](/images/blog/file-locker/file-locker-admin.jpg)  
+![Admin Dashboard](/images/blog/file-locker/file-locker-admin.jpg)
 *System stats, user management, and audit logs*
 
-![CLI Tool](/images/blog/file-locker/file-locker-cli.jpg)  
+![CLI Tool](/images/blog/file-locker/file-locker-cli.jpg)
 *Automation-ready CLI with progress tracking*
 
 ---
@@ -76,19 +76,19 @@ I love the terminal, so I built a Go CLI with **38 commands**. It mimics the API
 - Session expiry + force logout
 
 ### Admin Dashboard
-- User approval & role management  
-- File moderation & deletion  
-- Storage analysis & cleanup  
-- Audit logs  
-- System announcements  
+- User approval & role management
+- File moderation & deletion
+- Storage analysis & cleanup
+- Audit logs
+- System announcements
 
 ### Web Interface
-- Drag-and-drop uploads  
-- Real-time progress  
-- File tagging & search  
-- Expiring files  
-- In-browser video player  
-- Dark / light mode  
+- Drag-and-drop uploads
+- Real-time progress
+- File tagging & search
+- Expiring files
+- In-browser video player
+- Dark / light mode
 
 ### CLI Tool
 - 38 commands (100% API coverage)
@@ -101,7 +101,7 @@ I love the terminal, so I built a Go CLI with **38 commands**. It mimics the API
 
 ## Architecture Overview
 
-It’s a microservices-style setup running via Docker Compose:
+It's a microservices-style setup running via Docker Compose:
 
 1.  **Nginx:** Handles SSL termination and routes traffic.
 2.  **Go API:** The brain. Handles auth, encryption logic, and database queries.

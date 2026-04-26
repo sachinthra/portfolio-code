@@ -1,0 +1,111 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-orbit: #0B1D3A;
+  --color-orbit-light: #112a52;
+  --color-orbit-lighter: #1a3d6e;
+  --color-cyan: #00ADD8;
+  --color-cyan-light: #33c4e6;
+  --color-cyan-dark: #0090b3;
+  --color-stellar: #F8F9FA;
+  --color-stellar-dim: #E9ECEF;
+  --color-slate: #343A40;
+  --color-slate-light: #6C757D;
+  --color-slate-lighter: #ADB5BD;
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* ── Base Styles ── */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-stellar text-slate antialiased transition-colors duration-300;
+}
+
+:where(.dark) body {
+  @apply bg-orbit text-stellar;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-stellar-dim;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-cyan rounded-full;
+}
+
+:where(.dark) ::-webkit-scrollbar-track {
+  @apply bg-orbit-light;
+}
+
+/* ── Selection ── */
+::selection {
+  @apply bg-cyan/30 text-cyan;
+}
+
+/* ── Glass Effect ── */
+.glass {
+  @apply backdrop-blur-xl;
+  background: rgba(248, 249, 250, 0.85);
+  border-bottom: 1px solid rgba(52, 58, 64, 0.1);
+}
+
+:where(.dark) .glass {
+  background: rgba(17, 42, 82, 0.92);
+  border-bottom: 1px solid rgba(0, 173, 216, 0.25);
+  box-shadow: 0 1px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(0, 173, 216, 0.08);
+}
+
+/* ── Constellation pattern for light mode ── */
+.constellation-bg {
+  background-image: radial-gradient(circle, #ADB5BD 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.3;
+}
+
+:where(.dark) .constellation-bg {
+  background-image: radial-gradient(circle, rgba(0, 173, 216, 0.15) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 1;
+}
+
+/* ── Glow effects ── */
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(0, 173, 216, 0.3), 0 0 60px rgba(0, 173, 216, 0.1);
+}
+
+.text-glow {
+  text-shadow: 0 0 20px rgba(0, 173, 216, 0.5);
+}
+
+/* ── Section spacing ── */
+.section {
+  @apply py-20 md:py-32 px-6;
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,120 +1,183 @@
-# Sachinthra N V - Portfolio & Resume
+# Sachinthra N V — Portfolio
 
-Professional portfolio website built with Astro showcasing projects, skills, and experience as a Cloud Developer and Software Engineer.
+Space-themed dual-profile portfolio built with Next.js 16, React Three Fiber, and Tailwind CSS. Deploys as a static site to GitHub Pages.
 
-## 🌐 Live Site
+## Dual Profile System
 
-**[https://sachinthra.github.io](https://sachinthra.github.io)**
+The site supports two profile views — **SDE / Cloud Engineering** and **Robotics / IoT** — so the same portfolio can be tailored for different audiences.
 
-## 👨‍💻 About Me
+### How Profiles Work
 
-Software Development Engineer II (SDE-2) at Hewlett Packard Enterprise (HPE) with 3+ years of experience in:
-- Cloud solutions architecture and development
-- Backend engineering with Go and Python
-- DevOps and containerization
-- IoT and embedded systems
-- Self-hosted infrastructure
+| Priority | Source | Behavior |
+|----------|--------|----------|
+| 1 (highest) | URL query param `?profile=sde` or `?profile=robotics` | Overrides everything. Use this when sharing links. |
+| 2 | `localStorage` | Remembers the visitor's last choice across page loads. |
+| 3 | `DEFAULT_PROFILE` in `src/data/portfolio.ts` | Fallback for first-time visitors with no query param. |
+| 4 (lowest) | `null` | Shows a profile picker page asking the visitor to choose. |
 
-## 🛠️ Tech Stack
+### Sharing Links
 
-- **Framework:** [Astro](https://astro.build/) - Fast, content-focused static site generator
-- **Styling:** Custom CSS with dark/light theme support
-- **Content:** Markdown & MDX for blog posts
-- **SEO:** Sitemap, RSS feed, OpenGraph, JSON-LD structured data
-- **Deployment:** GitHub Pages
+- **Cloud recruiter:** `https://sachinthra.github.io/?profile=sde`
+- **Robotics company:** `https://sachinthra.github.io/?profile=robotics`
+- **Anyone else:** `https://sachinthra.github.io/` (shows picker or default)
 
-## ✨ Features
+### Setting a Default Profile
 
-- ✅ Minimal, professional design
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-optimized with meta tags and structured data
-- ✅ Sitemap and RSS feed
-- ✅ Dark/light theme toggle
-- ✅ Blog with project showcases
-- ✅ Responsive design
-- ✅ Fast page loads
+Edit `src/data/portfolio.ts`:
 
-## 📂 Project Structure
+```ts
+// Show picker to visitors (default)
+export const DEFAULT_PROFILE: Profile | null = null;
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-├── public/
-├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+// Or skip picker and default to SDE view
+export const DEFAULT_PROFILE: Profile | null = 'sde';
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+### What Gets Filtered
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Each entry in portfolio data has a `profiles: ('sde' | 'robotics')[]` tag:
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+- **Experience** — filtered by profile
+- **Projects** — filtered by profile
+- **Skills** — filtered by profile
+- **Hero tagline & bio** — different text per profile
+- **Resume PDF** — links to the matching PDF per profile
+- **Blog posts** — shown to both (not filtered)
 
-Any static assets, like images, can be placed in the `public/` directory.
+Items tagged `['sde', 'robotics']` appear in both views.
 
-## 🧞 Commands
+### Switch View
 
-All commands are run from the root of the project, from a terminal:
+A subtle "Switch view" link in the footer lets visitors reset their profile and return to the picker. It's intentionally hard to notice — recruiters see a single-focus portfolio.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Tech Stack
 
-## � Featured Projects
+- **Framework:** Next.js 16 (App Router, static export)
+- **3D:** React Three Fiber + Drei (wireframe globe, starfield, orbiting satellites)
+- **Styling:** Tailwind CSS v4
+- **Theme:** Dark (Deep Orbit) / Light (Stellar Bright) via `next-themes`
+- **Blog:** Markdown files parsed with `gray-matter`, custom renderer
+- **Animations:** Framer Motion (scroll-driven)
+- **Deploy:** GitHub Pages via static export
 
-### File Locker
-Production-ready encrypted file storage & streaming server built with Go, Preact, Docker, and AES-256. Running on Raspberry Pi 4 with 1TB storage.
+## Color Palette — Systems Explorer
 
-### NAS Project
-Custom Network Attached Storage solution using Raspberry Pi 4 and OpenMediaVault for centralized home storage.
+| Name | Hex | Usage |
+|------|-----|-------|
+| Deep Orbit Blue | `#0B1D3A` | Dark theme bg, headers |
+| Tech Cyan | `#00ADD8` | Buttons, links, accents |
+| Stellar White | `#F8F9FA` | Light theme bg |
+| Slate Gray | `#343A40` | Body text (light mode) |
 
-### Home Server
-Self-hosted infrastructure running multiple services including file storage, media streaming, and automation.
+## Project Structure
 
-## 📈 SEO Features
+```
+src/
+├── app/
+│   ├── layout.tsx            # Root layout (theme, profile, header, footer)
+│   ├── page.tsx              # Profile picker + home sections
+│   ├── globals.css           # Tailwind + theme variables
+│   └── blog/
+│       ├── page.tsx          # Blog index
+│       ├── BlogIndexClient.tsx
+│       └── [slug]/
+│           ├── page.tsx      # Blog post (SSG)
+│           └── BlogPostClient.tsx  # With TOC sidebar
+├── components/
+│   ├── Header.tsx            # Sticky nav (glass effect)
+│   ├── Footer.tsx            # Social links + "Switch view"
+│   ├── ThemeToggle.tsx       # Dark/light toggle
+│   ├── ProfilePicker.tsx     # Landing page portal cards
+│   ├── HeroSection.tsx       # Hero with 3D scene
+│   ├── ExperienceTimeline.tsx
+│   ├── ProjectGrid.tsx
+│   ├── SkillsSection.tsx
+│   ├── ContactSection.tsx
+│   ├── BlogPreview.tsx
+│   └── three/
+│       ├── Starfield.tsx     # Animated star particles (background)
+│       ├── HeroScene.tsx     # Wireframe globe + satellites
+│       └── SkillsConstellation.tsx
+├── context/
+│   ├── ProfileContext.tsx    # Profile state (URL param → localStorage → default)
+│   └── ThemeProvider.tsx
+├── data/
+│   └── portfolio.ts          # ← ALL portfolio data lives here
+├── content/blog/             # Markdown blog posts
+├── lib/blog.ts               # Blog file loading
+└── types/index.ts
+public/
+├── images/blog/              # Blog post images
+├── fonts/
+└── resume/
+    ├── sachinthra-sde.pdf     # ← Upload your SDE resume here
+    └── sachinthra-robotics.pdf # ← Upload your robotics resume here
+```
 
-- Sitemap generation at `/sitemap-index.xml`
-- RSS feed at `/rss.xml`
-- robots.txt for search engine crawlers
-- OpenGraph and Twitter Card meta tags
-- JSON-LD structured data for blog posts
-- Optimized meta descriptions and keywords
-- Canonical URLs
+## Commands
 
-## 🚀 Deployment
+```bash
+npm run dev       # Start dev server
+npm run build     # Production build (static export → out/)
+npm run start     # Serve production build
+npm run lint      # ESLint
+```
 
-Site is automatically deployed to GitHub Pages on push to main branch.
+## Adding Content
 
-## 📫 Connect
+### New Blog Post
 
-- **GitHub:** [@sachinthra](https://github.com/sachinthra)
-- **LinkedIn:** [Sachinthra N V](https://linkedin.com/in/sachinthra)
-- **Portfolio:** [sachinthra.github.io](https://sachinthra.github.io)
+Create `src/content/blog/my-post.md`:
 
+```md
+---
+title: 'My Post Title'
+description: 'A brief description.'
+pubDate: 'Apr 26 2026'
+heroImage: '/images/blog/my-post/hero.jpg'
+tags: ['Go', 'Docker']
 ---
 
-Built with [Astro](https://astro.build) • Hosted on [GitHub Pages](https://pages.github.com)
-
-Init
-```bash
-npm create astro@latest
+Your markdown content here...
 ```
 
-Dependencies
-```bash
-npm install @tresjs/core @tresjs/cientos three
-npm install @types/three -D 
+### New Project
+
+Add to the `projects` array in `src/data/portfolio.ts`:
+
+```ts
+{
+  id: 'my-project',
+  title: 'My Project',
+  description: 'What it does.',
+  tech: ['Go', 'Docker'],
+  profiles: ['sde', 'robotics'],  // which profile(s) show this
+  github: 'https://github.com/...',
+  blogSlug: 'my-post',  // optional: links to blog post
+}
 ```
 
+### New Experience
+
+Add to the `experiences` array in `src/data/portfolio.ts`.
+
+## Resume PDFs
+
+Upload your resume files to:
+- `public/resume/sachinthra-sde.pdf`
+- `public/resume/sachinthra-robotics.pdf`
+
+The site automatically links to the correct one based on the active profile.
+
+## Deploy to GitHub Pages
+
+The build generates a static `out/` directory. Deploy with:
+
+```bash
+npm run build
+# Upload out/ to gh-pages branch, or use GitHub Actions
+```
+
+## License
+
+MIT
