@@ -1,126 +1,103 @@
 # Sachinthra N V — Portfolio
 
-Space-themed dual-profile portfolio built with Next.js 16, React Three Fiber, and Tailwind CSS. Deploys as a static site to GitHub Pages.
-
-## Dual Profile System
-
-The site supports two profile views — **SDE / Cloud Engineering** and **Robotics / IoT** — so the same portfolio can be tailored for different audiences.
-
-### How Profiles Work
-
-| Priority | Source | Behavior |
-|----------|--------|----------|
-| 1 (highest) | URL query param `?profile=sde` or `?profile=robotics` | Overrides everything. Use this when sharing links. |
-| 2 | `localStorage` | Remembers the visitor's last choice across page loads. |
-| 3 | `DEFAULT_PROFILE` in `src/data/portfolio.ts` | Fallback for first-time visitors with no query param. |
-| 4 (lowest) | `null` | Shows a profile picker page asking the visitor to choose. |
-
-### Sharing Links
-
-- **Cloud recruiter:** `https://sachinthra.github.io/?profile=sde`
-- **Robotics company:** `https://sachinthra.github.io/?profile=robotics`
-- **Anyone else:** `https://sachinthra.github.io/` (shows picker or default)
-
-### Setting a Default Profile
-
-Edit `src/data/portfolio.ts`:
-
-```ts
-// Show picker to visitors (default)
-export const DEFAULT_PROFILE: Profile | null = null;
-
-// Or skip picker and default to SDE view
-export const DEFAULT_PROFILE: Profile | null = 'sde';
-```
-
-### What Gets Filtered
-
-Each entry in portfolio data has a `profiles: ('sde' | 'robotics')[]` tag:
-
-- **Experience** — filtered by profile
-- **Projects** — filtered by profile
-- **Skills** — filtered by profile
-- **Hero tagline & bio** — different text per profile
-- **Resume PDF** — links to the matching PDF per profile
-- **Blog posts** — shown to both (not filtered)
-
-Items tagged `['sde', 'robotics']` appear in both views.
-
-### Switch View
-
-A subtle "Switch view" link in the footer lets visitors reset their profile and return to the picker. It's intentionally hard to notice — recruiters see a single-focus portfolio.
+Space-themed portfolio built with Next.js 16, React Three Fiber, and Tailwind CSS. Deploys as a static site to GitHub Pages.
 
 ## Tech Stack
 
 - **Framework:** Next.js 16 (App Router, static export)
 - **3D:** React Three Fiber + Drei (wireframe globe, starfield, orbiting satellites)
 - **Styling:** Tailwind CSS v4
-- **Theme:** Dark (Deep Orbit) / Light (Stellar Bright) via `next-themes`
+- **Theme:** Dark / Light via `next-themes`
 - **Blog:** Markdown files parsed with `gray-matter`, custom renderer
 - **Animations:** Framer Motion (scroll-driven)
+- **SEO:** Sitemap, robots.txt, JSON-LD (Person + BlogPosting), OpenGraph, canonical URLs
 - **Deploy:** GitHub Pages via static export
 
-## Color Palette — Systems Explorer
+## Folder Structure
 
-| Name | Hex | Usage |
-|------|-----|-------|
-| Deep Orbit Blue | `#0B1D3A` | Dark theme bg, headers |
-| Tech Cyan | `#00ADD8` | Buttons, links, accents |
-| Stellar White | `#F8F9FA` | Light theme bg |
-| Slate Gray | `#343A40` | Body text (light mode) |
+This repo (`portfolio-code`) lives alongside the deploy repo:
+
+```
+Portfolio/
+├── portfolio-code/          ← This repo (Next.js source)
+├── sachinthra.github.io/    ← Deploy repo (static build output)
+└── Resume-Sachinthra/
+```
 
 ## Project Structure
 
 ```
 src/
 ├── app/
-│   ├── layout.tsx            # Root layout (theme, profile, header, footer)
-│   ├── page.tsx              # Profile picker + home sections
+│   ├── layout.tsx            # Root layout, metadata, JSON-LD
+│   ├── page.tsx              # Home — all sections
 │   ├── globals.css           # Tailwind + theme variables
+│   ├── sitemap.ts            # Auto-generated sitemap.xml
+│   ├── robots.ts             # robots.txt
 │   └── blog/
 │       ├── page.tsx          # Blog index
-│       ├── BlogIndexClient.tsx
 │       └── [slug]/
-│           ├── page.tsx      # Blog post (SSG)
-│           └── BlogPostClient.tsx  # With TOC sidebar
+│           ├── page.tsx      # Blog post (SSG + per-post metadata)
+│           └── BlogPostClient.tsx  # Renderer + TOC sidebar
 ├── components/
 │   ├── Header.tsx            # Sticky nav (glass effect)
-│   ├── Footer.tsx            # Social links + "Switch view"
-│   ├── ThemeToggle.tsx       # Dark/light toggle
-│   ├── ProfilePicker.tsx     # Landing page portal cards
-│   ├── HeroSection.tsx       # Hero with 3D scene
+│   ├── Footer.tsx            # Social links
+│   ├── HeroSection.tsx       # Hero with 3D scene + Clarke quote
+│   ├── AboutSection.tsx      # Bio, education, current focus
 │   ├── ExperienceTimeline.tsx
 │   ├── ProjectGrid.tsx
 │   ├── SkillsSection.tsx
+│   ├── CredentialsSection.tsx # Certifications & achievements
 │   ├── ContactSection.tsx
 │   ├── BlogPreview.tsx
 │   └── three/
-│       ├── Starfield.tsx     # Animated star particles (background)
+│       ├── Starfield.tsx
 │       ├── HeroScene.tsx     # Wireframe globe + satellites
 │       └── SkillsConstellation.tsx
 ├── context/
-│   ├── ProfileContext.tsx    # Profile state (URL param → localStorage → default)
 │   └── ThemeProvider.tsx
 ├── data/
 │   └── portfolio.ts          # ← ALL portfolio data lives here
 ├── content/blog/             # Markdown blog posts
 ├── lib/blog.ts               # Blog file loading
 └── types/index.ts
-public/
-├── images/blog/              # Blog post images
-├── fonts/
-└── resume/
-    ├── sachinthra-sde.pdf     # ← Upload your SDE resume here
-    └── sachinthra-robotics.pdf # ← Upload your robotics resume here
 ```
 
-## Commands
+## Development
 
 ```bash
-npm run dev       # Start dev server
+npm install       # Install dependencies
+npm run dev       # Start dev server (http://localhost:3000)
 npm run build     # Production build (static export → out/)
-npm run start     # Serve production build
 npm run lint      # ESLint
+```
+
+## Build & Deploy
+
+Build the static site and copy to the deploy repo:
+
+```bash
+# 1. Build
+npm run build
+
+# 2. Clean old build from deploy repo (keep .git and .gitignore)
+cd ../sachinthra.github.io
+find . -maxdepth 1 ! -name '.' ! -name '.git' ! -name '.gitignore' ! -name '.nojekyll' ! -name 'CNAME' -exec rm -rf {} +
+
+# 3. Copy new build
+cp -r ../portfolio-code/out/* .
+touch .nojekyll
+
+# 4. Commit and push
+git add .
+git commit -m "Deploy: $(date +%Y-%m-%d)"
+git push
+```
+
+Or as a one-liner from `portfolio-code/`:
+
+```bash
+npm run build && cd ../sachinthra.github.io && find . -maxdepth 1 ! -name '.' ! -name '.git' ! -name '.gitignore' ! -name '.nojekyll' ! -name 'CNAME' -exec rm -rf {} + && cp -r ../portfolio-code/out/* . && touch .nojekyll
 ```
 
 ## Adding Content
@@ -141,43 +118,19 @@ tags: ['Go', 'Docker']
 Your markdown content here...
 ```
 
-### New Project
+### New Project / Experience / Skill
 
-Add to the `projects` array in `src/data/portfolio.ts`:
+Edit `src/data/portfolio.ts` — all portfolio data is in one file.
 
-```ts
-{
-  id: 'my-project',
-  title: 'My Project',
-  description: 'What it does.',
-  tech: ['Go', 'Docker'],
-  profiles: ['sde', 'robotics'],  // which profile(s) show this
-  github: 'https://github.com/...',
-  blogSlug: 'my-post',  // optional: links to blog post
-}
-```
+## SEO Checklist
 
-### New Experience
-
-Add to the `experiences` array in `src/data/portfolio.ts`.
-
-## Resume PDFs
-
-Upload your resume files to:
-- `public/resume/sachinthra-sde.pdf`
-- `public/resume/sachinthra-robotics.pdf`
-
-The site automatically links to the correct one based on the active profile.
-
-## Deploy to GitHub Pages
-
-The build generates a static `out/` directory. Deploy with:
-
-```bash
-npm run build
-# Upload out/ to gh-pages branch, or use GitHub Actions
-```
-
-## License
-
-MIT
+- [x] Per-page `<title>` and `<meta description>`
+- [x] OpenGraph tags (title, description, type, image)
+- [x] Twitter card meta
+- [x] Canonical URLs on all pages
+- [x] `sitemap.xml` with all pages and blog posts
+- [x] `robots.txt` allowing all crawlers
+- [x] JSON-LD `Person` schema (homepage)
+- [x] JSON-LD `BlogPosting` schema (each blog post)
+- [x] Semantic HTML (`<main>`, `<article>`, `<section>`, `<nav>`)
+- [x] `lang="en"` on `<html>`
