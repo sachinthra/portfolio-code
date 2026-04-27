@@ -2,7 +2,7 @@
 title: 'Building an Expressive Robot Face with Python and a Tiny OLED'
 description: 'How I built RoboEyes — a smooth, thread-safe animation engine that renders expressive robot eyes on a 128x64 OLED display, controllable via REST API.'
 pubDate: 'Apr 27 2026'
-heroImage: '/images/blog/robot-eyes/robot-eyes-hero.jpg'
+heroImage: '/images/blog/robot-eyes/robot-eyes-hero.jpeg'
 tags: ['Robotics', 'Python', 'Raspberry Pi', 'OLED', 'Animation']
 ---
 
