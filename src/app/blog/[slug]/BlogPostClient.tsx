@@ -79,9 +79,28 @@ function TableOfContents({ items }: { items: TocItem[] }) {
 }
 
 function renderMarkdown(content: string): string {
-  let html = content
-    // Code blocks
-    .replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>')
+  // First, extract code blocks and replace with placeholders
+  const codeBlocks: string[] = [];
+  let processed = content.replace(/```(\w+)?\n([\s\S]*?)```/g, (_match, lang, code) => {
+    const index = codeBlocks.length;
+    codeBlocks.push(`<pre><code class="language-${lang || ''}">${code}</code></pre>`);
+    return `%%CODEBLOCK_${index}%%`;
+  });
+
+  // Extract markdown tables and replace with placeholders
+  const tables: string[] = [];
+  processed = processed.replace(/^(\|.+\|)\n(\|[\s:|-]+\|)\n((?:\|.+\|\n?)+)/gm, (_match, headerRow, _sepRow, bodyRows) => {
+    const headers = headerRow.split('|').filter((c: string) => c.trim()).map((c: string) => c.trim());
+    const rows = bodyRows.trim().split('\n').map((row: string) =>
+      row.split('|').filter((c: string) => c.trim()).map((c: string) => c.trim())
+    );
+    const tableHtml = `<table class="w-full my-6 text-sm border-collapse"><thead><tr>${headers.map((h: string) => `<th class="text-left px-4 py-2 border-b border-white/20 font-semibold">${h}</th>`).join('')}</tr></thead><tbody>${rows.map((row: string[]) => `<tr>${row.map((cell: string) => `<td class="px-4 py-2 border-b border-white/10">${cell}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+    const index = tables.length;
+    tables.push(tableHtml);
+    return `%%TABLE_${index}%%`;
+  });
+
+  let html = processed
     // Inline code
     .replace(/`([^`]+)`/g, '<code>$1</code>')
     // Headers — add id attributes for TOC anchoring
@@ -109,11 +128,15 @@ function renderMarkdown(content: string): string {
     .replace(/^- (.*$)/gm, '<li>$1</li>')
     // Ordered lists
     .replace(/^\d+\.\s+(.*$)/gm, '<li>$1</li>')
-    // Paragraphs
-    .replace(/^(?!<[hluop]|<li|<pre|<hr|<img)(.*\S.*)$/gm, '<p>$1</p>');
+    // Paragraphs — only for lines that aren't already HTML or placeholders
+    .replace(/^(?!<[hluop]|<li|<pre|<hr|<img|%%CODEBLOCK|%%TABLE)(.*\S.*)$/gm, '<p>$1</p>');
 
   // Wrap consecutive <li> in <ul>
   html = html.replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul class="list-disc pl-6 space-y-1 my-4">$1</ul>');
+
+  // Restore code blocks and tables
+  html = html.replace(/%%CODEBLOCK_(\d+)%%/g, (_match, index) => codeBlocks[parseInt(index)]);
+  html = html.replace(/%%TABLE_(\d+)%%/g, (_match, index) => tables[parseInt(index)]);
 
   return html;
 }
