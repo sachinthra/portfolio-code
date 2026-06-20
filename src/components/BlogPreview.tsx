@@ -39,6 +39,13 @@ const allPosts: BlogCardData[] = [
     pubDate: '2024-12-26',
     tags: ['Raspberry Pi', 'Docker', 'Linux'],
   },
+  {
+    slug: 'project-rover',
+    title: 'Project Rover: From Raspberry Pi to ESP32',
+    description: 'How I built a 4WD robotics platform with ESP32, solved brownout resets with proper power design, and created a remote PlatformIO flashing workflow.',
+    pubDate: '2026-06-20',
+    tags: ['Robotics', 'ESP32', 'Raspberry Pi', 'Embedded Systems', 'PlatformIO', 'IoT'],
+  },
 ];
 
 export default function BlogPreview() {
